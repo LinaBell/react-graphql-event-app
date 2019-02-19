@@ -1,19 +1,18 @@
 import React, { Component } from "react";
-import { graphql } from "react-apollo";
-
+// import { graphql } from "react-apollo";
 import moment from 'moment';
-
-import QueryGetEvent from "../GraphQL/QueryGetEvent";
-import SubsriptionEventComments from "../GraphQL/SubsriptionEventComments";
-
+// import { getEvent } from "../graphql/queries"
+// import { subscribeToEventComments } from "../graphql/subscriptions";
 import NewComment from "./NewComment";
+
+// TODO: Add subscription
 
 class EventComments extends Component {
 
     subscription;
 
     componentDidMount() {
-        this.subscription = this.props.subscribeToComments();
+        this.subscription = this.props.subscribeToEventComments();
     }
 
     componentWillUnmount() {
@@ -52,41 +51,4 @@ class EventComments extends Component {
 
 }
 
-const EventCommentsWithData = graphql(
-    QueryGetEvent,
-    {
-        options: ({ eventId: id }) => ({
-            fetchPolicy: 'cache-first',
-            variables: { id }
-        }),
-        props: props => ({
-            comments: props.data.getEvent ? props.data.getEvent.comments : { items: [] },
-            subscribeToComments: () => props.data.subscribeToMore({
-                document: SubsriptionEventComments,
-                variables: {
-                    eventId: props.ownProps.eventId,
-                },
-                updateQuery: (prev, { subscriptionData: { data: { subscribeToEventComments } } }) => {
-                    const res = {
-                        ...prev,
-                        getEvent: {
-                            ...prev.getEvent,
-                            comments: {
-                                __typename: 'CommentConnections',
-                                ...prev.getEvent.comments,
-                                items: [
-                                    ...prev.getEvent.comments.items.filter(c => c.commentId !== subscribeToEventComments.commentId),
-                                    subscribeToEventComments,
-                                ]
-                            }
-                        }
-                    };
-
-                    return res;
-                }
-            })
-        }),
-    },
-)(EventComments);
-
-export default EventCommentsWithData;
+export default EventComments;

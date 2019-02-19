@@ -5,8 +5,8 @@ import DatePicker from 'react-datepicker'
 import moment from 'moment'
 import { nearest15min } from "../Utils"
 import DateTimePickerCustomInput from "./DateTimePickerCustomInput"
-import MutationCreateEvent from "../GraphQL/MutationCreateEvent"
-import QueryGetUser from "../GraphQL/QueryGetUser"
+import { getUser } from "../graphql/queries"
+import { createEvent } from "../graphql/mutations"
 
 class NewEvent extends Component {
   state = {
@@ -21,7 +21,7 @@ class NewEvent extends Component {
 
   async componentWillMount() {
       try {
-          const result1 = await API.graphql(graphqlOperation(QueryGetUser, { id: '0b6a50aa-6451-4db9-a90e-0ef03ff94e62' }))
+          const result1 = await API.graphql(graphqlOperation(getUser, { id: '0b6a50aa-6451-4db9-a90e-0ef03ff94e62' }))
           console.log('componentWillMount: result1 = ', result1)
           this.setState({
             user: result1.data.getUser
@@ -47,7 +47,7 @@ class NewEvent extends Component {
     e.stopPropagation()
     e.preventDefault()
 
-    await API.graphql(graphqlOperation(MutationCreateEvent, { userId: this.state.user.id, ...this.state.event }))
+    await API.graphql(graphqlOperation(createEvent, { userId: this.state.user.id, ...this.state.event }))
 
     this.props.history.push('/')
   }

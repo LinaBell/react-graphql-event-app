@@ -1,16 +1,14 @@
-import React, { Component } from "react";
-import { graphql } from "react-apollo";
-import { Link } from "react-router-dom";
-
-import moment from 'moment';
-
-import QueryGetEvent from "../GraphQL/QueryGetEvent";
-import EventComments from "./EventComments";
+import React, { Component } from "react"
+import { graphql } from "react-apollo"
+import { Link } from "react-router-dom"
+import moment from 'moment'
+import { getEvent } from "../graphql/queries"
+import EventComments from "./EventComments"
 
 class ViewEvent extends Component {
 
     render() {
-        const { event, loading } = this.props;
+        const { event, loading } = this.props
 
         return (
             <div className={`ui container raised very padded segment ${loading ? 'loading' : ''}`}>
@@ -30,23 +28,24 @@ class ViewEvent extends Component {
                     </div>
                 </div>
             </div>
-        );
+        )
     }
 
 }
 
-const ViewEventWithData = graphql(
-    QueryGetEvent,
-    {
-        options: ({ match: { params: { id } } }) => ({
-            variables: { id },
-            fetchPolicy: 'cache-and-network',
-        }),
-        props: ({ data: { getEvent: event, loading} }) => ({
-            event,
-            loading,
-        }),
-    },
-)(ViewEvent);
+// const ViewEventWithData = graphql(
+//     getEvent,
+//     {
+//         options: ({ match: { params: { id } } }) => ({
+//             variables: { id },
+//             fetchPolicy: 'cache-and-network',
+//         }),
+//         props: ({ data: { getEvent: event, loading} }) => ({
+//             event,
+//             loading,
+//         }),
+//     },
+// )(ViewEvent)
 
-export default ViewEventWithData;
+// export default ViewEventWithData
+export default ViewEvent
