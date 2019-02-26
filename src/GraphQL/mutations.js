@@ -1,23 +1,26 @@
 // eslint-disable
 // this is an auto generated file. This will be overwritten
 
-export const createUser = `mutation CreateUser($username: String!, $email: String!) {
-  createUser(username: $username, email: $email) {
+export const createUser = `mutation CreateUser(
+  $userId: String!
+  $username: String!
+  $firstname: String!
+  $lastname: String!
+  $email: String!
+) {
+  createUser(
+    userId: $userId
+    username: $username
+    firstname: $firstname
+    lastname: $lastname
+    email: $email
+  ) {
     id
+    userId
     username
+    firstname
+    lastname
     email
-    events {
-      items {
-        userId
-        id
-        name
-        where
-        when
-        description
-        isPrivate
-      }
-      nextToken
-    }
   }
 }
 `;

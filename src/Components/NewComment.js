@@ -1,10 +1,9 @@
-import React, { Component } from "react";
-import { graphql } from "react-apollo";
-import { v4 as uuid } from "uuid";
-
-// import MutationCommentOnEvent from "../GraphQL/MutationCommentOnEvent";
-// import QueryGetEvent from "../GraphQL/QueryGetEvent";
-import moment from "moment";
+import React, { Component } from "react"
+// import { graphql } from "react-apollo"
+// import { v4 as uuid } from "uuid"
+// import MutationCommentOnEvent from "../GraphQL/MutationCommentOnEvent"
+// import QueryGetEvent from "../GraphQL/QueryGetEvent"
+import moment from "moment"
 
 class NewComment extends Component {
 
@@ -17,33 +16,33 @@ class NewComment extends Component {
             content: '',
         },
         loading: false,
-    };
+    }
 
-    state = NewComment.defaultState;
+    state = NewComment.defaultState
 
     handleSubmit = async (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-        const { comment } = this.state;
-        const { eventId, createComment } = this.props;
+        e.stopPropagation()
+        e.preventDefault()
+        const { comment } = this.state
+        const { eventId, createComment } = this.props
 
-        this.setState({ loading: true });
+        this.setState({ loading: true })
 
         await createComment({
             ...comment,
             eventId,
             createdAt: moment.utc().format(),
-        });
+        })
 
-        this.setState(NewComment.defaultState);
+        this.setState(NewComment.defaultState)
     }
 
     handleChange = ({ target: { value: content } }) => {
-        this.setState({ comment: { content } });
+        this.setState({ comment: { content } })
     }
 
     render() {
-        const { comment, loading } = this.state;
+        const { comment, loading } = this.state
         return (
             <form className="ui reply form">
                 <div className="field">
@@ -55,7 +54,7 @@ class NewComment extends Component {
                     Add Comment
                 </button>
             </form>
-        );
+        )
     }
 }
 
@@ -64,9 +63,9 @@ class NewComment extends Component {
 //     {
 //         options: props => ({
 //             update: (proxy, { data: { commentOnEvent } }) => {
-//                 const query = QueryGetEvent;
-//                 const variables = { id: commentOnEvent.eventId };
-//                 const data = proxy.readQuery({ query, variables });
+//                 const query = QueryGetEvent
+//                 const variables = { id: commentOnEvent.eventId }
+//                 const data = proxy.readQuery({ query, variables })
 
 //                 data.getEvent = {
 //                     ...data.getEvent,
@@ -77,9 +76,9 @@ class NewComment extends Component {
 //                             commentOnEvent,
 //                         ]
 //                     }
-//                 };
+//                 }
 
-//                 proxy.writeQuery({ query, data });
+//                 proxy.writeQuery({ query, data })
 //             },
 //         }),
 //         props: props => ({
@@ -87,11 +86,11 @@ class NewComment extends Component {
 //                 return props.mutate({
 //                     variables: { ...comment },
 //                     optimisticResponse: { commentOnEvent: { ...comment, __typename: 'Comment', commentId: uuid() } },
-//                 });
+//                 })
 //             }
 //         })
 //     }
-// )(NewComment);
+// )(NewComment)
 
-// export default NewCommentWithData;
-export default NewComment;
+// export default NewCommentWithData
+export default NewComment

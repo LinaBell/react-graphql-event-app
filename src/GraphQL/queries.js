@@ -1,43 +1,25 @@
 // eslint-disable
 // this is an auto generated file. This will be overwritten
 
-export const getUser = `query GetUser($id: ID!) {
-  getUser(id: $id) {
+export const getUser = `query GetUser($userId: ID!) {
+  getUser(userId: $userId) {
     id
+    userId
     username
+    firstname
+    lastname
     email
-    events {
-      items {
-        userId
-        id
-        name
-        where
-        when
-        description
-        isPrivate
-      }
-      nextToken
-    }
   }
 }
 `;
 export const listUsers = `query ListUsers {
   listUsers {
     id
+    userId
     username
+    firstname
+    lastname
     email
-    events {
-      items {
-        userId
-        id
-        name
-        where
-        when
-        description
-        isPrivate
-      }
-      nextToken
-    }
   }
 }
 `;

@@ -1,34 +1,21 @@
-import React, { Component } from "react"
-import { Link } from "react-router-dom"
+import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 import { API, graphqlOperation } from 'aws-amplify'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
-import { nearest15min } from "../Utils"
-import DateTimePickerCustomInput from "./DateTimePickerCustomInput"
-import { getUser } from "../graphql/queries"
-import { createEvent } from "../graphql/mutations"
+import { nearest15min } from '../Utils'
+import DateTimePickerCustomInput from './DateTimePickerCustomInput'
+import { createEvent } from '../graphql/mutations'
 
 class NewEvent extends Component {
   state = {
-    user: {},
     event: {
       name: '',
       when: nearest15min().format(),
       where: '',
       description: '',
     }
-  }
-
-  async componentWillMount() {
-      try {
-          const result1 = await API.graphql(graphqlOperation(getUser, { id: '0b6a50aa-6451-4db9-a90e-0ef03ff94e62' }))
-          console.log('componentWillMount: result1 = ', result1)
-          this.setState({
-            user: result1.data.getUser
-           })
-      } catch (err) {
-          console.log(err)
-      }
   }
 
   handleChange(field, { target: { value } }) {
@@ -47,7 +34,7 @@ class NewEvent extends Component {
     e.stopPropagation()
     e.preventDefault()
 
-    await API.graphql(graphqlOperation(createEvent, { userId: this.state.user.id, ...this.state.event }))
+    await API.graphql(graphqlOperation(createEvent, { userId: this.props.user.id, ...this.state.event }))
 
     this.props.history.push('/')
   }
@@ -85,7 +72,11 @@ class NewEvent extends Component {
               <label htmlFor="where">Where</label>
               <input type="text" id="where" value={event.where} onChange={this.handleChange.bind(this, 'where')} />
           </div>
-          <div className="field required eight wide">
+          <div className="field eight wide">
+              <label htmlFor="private">Make this a private event?</label>
+              <input type="checkbox" id="private" value={event.isPrivate} onChange={this.handleChange.bind(this, 'private')} />
+          </div>
+          <div className="field required twelve wide">
               <label htmlFor="description">Description</label>
               <textarea name="description" id="description" rows="10" value={event.description}
                   onChange={this.handleChange.bind(this, 'description')}></textarea>
@@ -101,4 +92,10 @@ class NewEvent extends Component {
   }
 }
 
-export default NewEvent
+function mapStateToProps(state) {
+  const { user } = state.user
+  return {
+    user
+  }
+}
+export default connect(mapStateToProps)(NewEvent)

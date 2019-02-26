@@ -1,8 +1,8 @@
 import React, { Component } from "react"
-import { graphql } from "react-apollo"
 import { Link } from "react-router-dom"
 import moment from 'moment'
-import { getEvent } from "../graphql/queries"
+// import { graphql } from "react-apollo"
+// import { getEvent } from "../graphql/queries"
 import EventComments from "./EventComments"
 
 class ViewEvent extends Component {
