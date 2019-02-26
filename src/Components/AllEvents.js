@@ -56,7 +56,7 @@ class AllEvents extends Component {
   handleCopyClick = async (event, e) => {
     e.preventDefault()
     let dupEvent = event
-    dupEvent.isPrivate = true
+    dupEvent.isPublic = false
     this.setState({ loading: true })
     await API.graphql(graphqlOperation(createEvent, { userId: this.props.user.id, dupEvent }))
     this.getEvents()
@@ -94,38 +94,35 @@ class AllEvents extends Component {
     else this.getPublicEvents()
   }
 
-  renderEvent = (event) => {
-    const copyBtnStyle = event.userId === this.props.user.id ? {display: 'none'} : {width: '50%', display: 'inline'}
-    const deleteBtnStyle = event.userId === this.props.user.id ? {width: '100%'} : {width: '50%', display: 'inline'}
-    return(
-      <Link to={`/event/${event.id}`} className="card" key={event.id}>
-          <div className="content">
-              <div className="header">{event.name}</div>
-          </div>
-          <div className="content">
-              <p><i className="icon calendar"></i>{moment(event.when).format('LL')}</p>
-              <p><i className="icon clock"></i>{moment(event.when).format('LT')}</p>
-              <p><i className="icon marker"></i>{event.where}</p>
-          </div>
-          <div className="content">
-              <div className="description"><i className="icon info circle"></i>{event.description}</div>
-          </div>
-          <div className="extra content">
-              <i className="icon comment"></i> {event.comments.items ? event.comments.items.length : 0} comments
-          </div>
-          <div>
-            <button className="ui bottom attached button" style={copyBtnStyle} onClick={() => this.handleCopyClick(event)}>
-                <i className="copy icon"></i>
-                Copy
-            </button>
-            <button className="ui bottom attached button" style={deleteBtnStyle} onClick={() => this.handleDeleteClick(event)}>
-                <i className="trash icon"></i>
-                Delete
-            </button>
-          </div>
-      </Link>
-    )
-  }
+  renderEvent = (event) => (
+    <Link to={`/event/${event.id}`} className="card" key={event.id}>
+        <div className="content">
+            <div className="header">{event.name}</div>
+        </div>
+        <div className="content">
+            <p><i className="icon calendar"></i>{moment(event.when).format('LL')}</p>
+            <p><i className="icon clock"></i>{moment(event.when).format('LT')}</p>
+            <p><i className="icon marker"></i>{event.where}</p>
+        </div>
+        <div className="content">
+            <div className="description"><i className="icon info circle"></i>{event.description}</div>
+        </div>
+        <div className="extra content">
+            <i className="icon comment"></i> {event.comments.items ? event.comments.items.length : 0} comments
+        </div>
+        {event.userId === this.props.user.id ?
+          <button className="ui bottom attached button" onClick={() => this.handleDeleteClick(event)}>
+              <i className="trash icon"></i>
+              Delete
+          </button>
+        :
+          <button className="ui bottom attached button" onClick={() => this.handleCopyClick(event)}>
+              <i className="copy icon"></i>
+              Copy
+          </button>
+        }
+    </Link>
+  )
 
   render() {
     const { loading, events, displayPublic, error } = this.state
@@ -134,7 +131,7 @@ class AllEvents extends Component {
     return (
       <div>
         {loading ?
-          <div className="content center pad-box-lg">
+          <div className="content new-event pad-box-lg">
             <i aria-hidden="true" className="refresh icon loading massive"></i>
           </div>
           :
@@ -155,7 +152,7 @@ class AllEvents extends Component {
                     </Link>
                 </div>
                 {[].concat(events).sort((a, b) => a.when.localeCompare(b.when)).map(this.renderEvent)}
-                {error}
+                <div className="clearing error pad-box-lg">{error}</div>
             </div>
           </div>
         }

@@ -44,7 +44,7 @@ export const createEvent = `mutation CreateEvent(
     where
     when
     description
-    isPrivate
+    isPublic
     comments {
       items {
         eventId
@@ -65,7 +65,7 @@ export const deleteEvent = `mutation DeleteEvent($id: ID!) {
     where
     when
     description
-    isPrivate
+    isPublic
     comments {
       items {
         eventId

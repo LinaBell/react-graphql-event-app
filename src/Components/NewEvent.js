@@ -73,8 +73,8 @@ class NewEvent extends Component {
               <input type="text" id="where" value={event.where} onChange={this.handleChange.bind(this, 'where')} />
           </div>
           <div className="field eight wide">
-              <label htmlFor="private">Make this a private event?</label>
-              <input type="checkbox" id="private" value={event.isPrivate} onChange={this.handleChange.bind(this, 'private')} />
+              <label htmlFor="public">Is this a public event?</label>
+              <input type="checkbox" id="public" value={event.isPublic} onChange={this.handleChange.bind(this, 'public')} />
           </div>
           <div className="field required twelve wide">
               <label htmlFor="description">Description</label>

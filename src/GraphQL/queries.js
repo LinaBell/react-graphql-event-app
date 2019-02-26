@@ -31,7 +31,7 @@ export const getEvent = `query GetEvent($id: ID!) {
     where
     when
     description
-    isPrivate
+    isPublic
     comments {
       items {
         eventId
@@ -53,7 +53,7 @@ export const listEventsByUser = `query ListEventsByUser($userId: ID!, $limit: In
       where
       when
       description
-      isPrivate
+      isPublic
       comments {
         nextToken
       }
@@ -71,7 +71,7 @@ export const listEventsPublic = `query ListEventsPublic($limit: Int, $nextToken:
       where
       when
       description
-      isPrivate
+      isPublic
       comments {
         nextToken
       }

@@ -337,7 +337,7 @@
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
-          "name" : "isPrivate",
+          "name" : "isPublic",
           "description" : null,
           "args" : [ ],
           "type" : {
